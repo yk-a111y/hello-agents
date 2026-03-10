@@ -35,7 +35,7 @@ pip install pydantic
 
 ```bash
 # Linux/Mac
-export DASHSCOPE_API_KEY="your-api-key-here"
+export DASHSCOPE_API_KEY="sk-99343cd51905462da06a63eca43ac003"
 
 # Windows PowerShell
 $env:DASHSCOPE_API_KEY="your-api-key-here"
@@ -55,6 +55,7 @@ python main_cn.py
 ## 🎭 游戏角色说明
 
 ### 游戏角色
+
 - **狼人**：夜晚击杀好人，白天隐藏身份
 - **预言家**：每晚查验一名玩家身份
 - **女巫**：拥有解药和毒药各一瓶
@@ -62,6 +63,7 @@ python main_cn.py
 - **村民**：通过推理和投票找出狼人
 
 ### 三国人物
+
 - **刘备**：仁德宽厚，善于团结众人
 - **关羽**：忠义刚烈，言辞直接
 - **张飞**：性格豪爽，容易冲动
@@ -72,6 +74,7 @@ python main_cn.py
 ## 🏗️ 架构设计
 
 ### 分层架构
+
 ```
 游戏控制层 (ThreeKingdomsWerewolfGame)
     ├── 游戏状态管理
@@ -92,6 +95,7 @@ python main_cn.py
 ### 核心组件
 
 **1. 消息中心 (MsgHub)**
+
 ```python
 async with MsgHub(
     participants=self.werewolves,
@@ -103,6 +107,7 @@ async with MsgHub(
 ```
 
 **2. 结构化输出**
+
 ```python
 class VoteModelCN(BaseModel):
     vote: str = Field(description="投票目标玩家姓名")
@@ -111,6 +116,7 @@ class VoteModelCN(BaseModel):
 ```
 
 **3. 并发管道**
+
 ```python
 vote_msgs = await fanout_pipeline(
     self.alive_players,
@@ -123,11 +129,13 @@ vote_msgs = await fanout_pipeline(
 ## 🎯 游戏流程
 
 ### 夜晚阶段
+
 1. **狼人讨论**：狼人通过 MsgHub 协商击杀目标
 2. **预言家查验**：预言家选择查验对象
 3. **女巫行动**：女巫决定是否使用解药/毒药
 
 ### 白天阶段
+
 1. **死亡公布**：公布夜晚死亡玩家
 2. **自由讨论**：所有存活玩家参与讨论
 3. **投票淘汰**：投票选择淘汰对象
@@ -136,12 +144,14 @@ vote_msgs = await fanout_pipeline(
 ## 🔧 自定义配置
 
 ### 修改游戏人数
+
 ```python
 # 在 main_cn.py 中修改
 await game.setup_game(player_count=8)  # 支持 6-12 人
 ```
 
 ### 添加新角色
+
 ```python
 # 在 game_roles.py 中添加
 ROLES["守护者"] = {
@@ -152,6 +162,7 @@ ROLES["守护者"] = {
 ```
 
 ### 自定义提示词
+
 ```python
 # 在 prompt_cn.py 中修改
 def get_role_prompt(role: str, character: str) -> str:
@@ -162,19 +173,25 @@ def get_role_prompt(role: str, character: str) -> str:
 ## 🐛 常见问题
 
 ### Q: 游戏无法启动？
+
 A: 检查以下几点：
+
 - 确认 DASHSCOPE_API_KEY 环境变量已设置
 - 验证 API Key 是否有效
 - 检查网络连接是否正常
 
 ### Q: 智能体输出格式错误？
+
 A: 可能原因：
+
 - 模型理解能力限制
 - 提示词设计不够清晰
 - 结构化输出约束过于复杂
 
 ### Q: 游戏流程卡住？
+
 A: 建议：
+
 - 检查 MsgHub 的消息传递
 - 验证并发管道的执行状态
 - 查看控制台错误日志
@@ -182,16 +199,19 @@ A: 建议：
 ## 📚 技术亮点
 
 ### 1. 消息驱动架构
+
 - 智能体间完全通过消息交互
 - 支持异步并发处理
 - 天然的分布式能力
 
 ### 2. 结构化输出约束
+
 - 游戏规则转化为代码约束
 - 提升系统稳定性和可预测性
 - 便于调试和监控
 
 ### 3. 双重角色建模
+
 - 游戏角色 + 三国人物的创新设计
 - 展现不同人格的策略差异
 - 增强游戏的趣味性和真实感
@@ -207,6 +227,7 @@ A: 建议：
 ## 🤝 贡献指南
 
 欢迎提交 Issue 和 Pull Request：
+
 - 报告游戏 Bug 或异常
 - 提出新功能建议
 - 优化代码实现
@@ -214,4 +235,4 @@ A: 建议：
 
 ---
 
-*本案例是 Hello-Agents 教程第六章的核心实战项目，展示了 AgentScope 框架在构建复杂多智能体应用方面的强大能力。*
+_本案例是 Hello-Agents 教程第六章的核心实战项目，展示了 AgentScope 框架在构建复杂多智能体应用方面的强大能力。_
